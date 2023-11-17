@@ -9,10 +9,11 @@
 </script>
 
 <h1>ChatApp</h1>
-
-{#if $currentUser}
-<Messages/>
-<button on:click={signOut}>Sign Out</button>
-{:else}
-<Login/>
-{/if}
+<div class="center">
+    {#if $currentUser}
+    <Messages/>
+    <button on:click={signOut}>Sign Out</button>
+    {:else}
+    <Login/>
+    {/if}
+</div>

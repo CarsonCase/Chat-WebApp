@@ -2,6 +2,7 @@
     import {onDestroy, onMount} from "svelte";
     import {currentUser, pb} from "./pocketbase";
     import type RecordModel from "pocketbase";
+    import {Avatar} from "@skeletonlabs/skeleton";
     let messages: any = [];
     let unsubscribe: ()=> void;
 
@@ -39,27 +40,29 @@
         const createdMessage = await pb.collection("messages").create(data);
     }
 </script>
-<h3>Messages</h3>
-<div class="messages">
+
+
+<section class="card">
+<div class="messages w-full h-full grid grid-cols-1">
     {#each messages as message (message.id)}
-    <div class="msg">
-        <img 
-        src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${message.expand?.author}`} 
-        alt="avatar"
-        width="40px" 
-        class="avatar"
-        />
-        <div>
-            <small>
-                Sent by @{message.expand?.author?.username}
-            </small>
-            <p class="msg-text">{message.message}</p>
+    <div class="grid grid-cols-[auto_1fr] gap-2">
+        <Avatar src="https://api.dicebear.com/7.x/pixel-art/svg?seed=${message.expand?.author?.username}" width="w-12" />
+        <div class="card p-4 variant-soft rounded-tl-none space-y-2">
+            <header class="flex justify-between items-center">
+                <p class="font-bold">@{message.expand?.author?.username}</p>
+            </header>
+            <p>{message.message}</p>
         </div>
     </div>
     {/each}
 
-    <form on:submit|preventDefault ={sendMessage}>
-        <input type="text" bind:value={newMessage}>
-        <button>Send Message</button>
+    <div class="input-group input-group-divider grid-cols-[auto_1fr_auto] rounded-container-token">
+        <form on:submit|preventDefault ={sendMessage}>
+        <input bind:value={newMessage} class="input" title="Input (text)" type="text" placeholder="input text" />
+        <button class="variant-filled-primary">Send</button>
     </form>
+
+    </div>
+
 </div>
+</section>		
